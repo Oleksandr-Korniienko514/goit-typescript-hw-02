@@ -1,12 +1,12 @@
-image{
-    display: block;
-}
+
 .profile{
     width: 300px;
     margin: 0;
     border: 1px solid #dcdcdc;
     border-radius: 10px;
     text-align: center;
+    margin-bottom: 100px;
+    margin:auto;
 }
 .user{
     padding: 20px;
