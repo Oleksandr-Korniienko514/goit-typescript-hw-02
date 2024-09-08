@@ -1,9 +1,14 @@
 import React from 'react'
+import {
+  Profile
+} from 'components'
 
 const App = () => {
   return (
-    <div>App</div>
-  )
-}
+    <>
+      <profile />
+    </>
+  );
+};
 
 export default App
