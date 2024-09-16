@@ -1,6 +1,8 @@
+/* src/index.css */
 
-ul {
-  list-style: none;
+body {
+  font-family: sans-serif;
+  line-height: 1.5;
 }
 
 h1,
@@ -10,13 +12,16 @@ h4,
 h5,
 h6,
 p {
-  margin-top: 0;
-  margin-bottom: 0;
+  margin: 0;
 }
 
 ul,
 ol {
-  margin-top: 0;
-  margin-bottom: 0;
-  padding-left: 0;
+  margin: 0;
+  padding: 0;
+}
+
+img {
+  display: block;
+  max-width: 100%;
 }

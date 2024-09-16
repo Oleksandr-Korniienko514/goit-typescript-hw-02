@@ -5,8 +5,8 @@ import './index.css'
 import clsx from "clsx"
 
 createRoot(document.getElementById('root')).render(
-  <StrictMode>
-    <App />
+    <StrictMode>
+        <App />
 
-  </StrictMode>,
+    </StrictMode>,
 )
