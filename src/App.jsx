@@ -1,54 +1,74 @@
 import React, { useState, useEffect } from 'react';
-import Options from './components/Options/Options';
-import Feedback from './components/Feedback/Feedback';
-import Notification from './components/Notification/Notification';
-import Description from './components/Description/Description';
+import ContactForm from './components/ContactForm/ContactForm';
+import SearchBox from './components/SearchBox/SearchBox';
+import ContactList from './components/ContactList/ContactList';
+import { nanoid } from 'nanoid';
 
 const App = () => {
-  const [feedback, setFeedback] = useState({
-    good: 0,
-    neutral: 0,
-    bad: 0,
-  });
+  const [contacts, setContacts] = useState([
+    { id: 'id-1', name: 'Rosie Simpson', number: '459-12-56' },
+    { id: 'id-2', name: 'Hermione Kline', number: '443-89-12' },
+    { id: 'id-3', name: 'Eden Clements', number: '645-17-79' },
+    { id: 'id-4', name: 'Annie Copeland', number: '227-91-26' },
+  ]);
 
-  const totalFeedback = feedback.good + feedback.neutral + feedback.bad;
-  const positiveFeedback = Math.round((feedback.good / totalFeedback) * 100) || 0;
+  const [filter, setFilter] = useState('');
+
 
   useEffect(() => {
-    const storedFeedback = localStorage.getItem('feedback');
-    if (storedFeedback) {
-      setFeedback(JSON.parse(storedFeedback));
+    const savedContacts = JSON.parse(localStorage.getItem('contacts'));
+    if (savedContacts) {
+      setContacts(savedContacts);
     }
   }, []);
 
+
   useEffect(() => {
-    localStorage.setItem('feedback', JSON.stringify(feedback));
-  }, [feedback]);
+    localStorage.setItem('contacts', JSON.stringify(contacts));
+  }, [contacts]);
 
-  const updateFeedback = (type) => {
-    setFeedback((prevFeedback) => ({
-      ...prevFeedback,
-      [type]: prevFeedback[type] + 1,
-    }));
+
+  const addContact = ({ name, number }) => {
+    const duplicate = contacts.find(
+      contact => contact.name.toLowerCase() === name.toLowerCase()
+    );
+
+    if (duplicate) {
+      alert(`${name} is already in contacts!`);
+      return;
+    }
+
+    const newContact = {
+      id: nanoid(),
+      name,
+      number,
+    };
+    setContacts((prevContacts) => [newContact, ...prevContacts]);
   };
 
-  const resetFeedback = () => {
-    setFeedback({ good: 0, neutral: 0, bad: 0 });
+
+  const deleteContact = (id) => {
+    setContacts((prevContacts) => prevContacts.filter(contact => contact.id !== id));
   };
+
+
+  const handleFilterChange = (filter) => {
+    setFilter(filter);
+  };
+
+
+  const filteredContacts = contacts.filter(contact =>
+    contact.name.toLowerCase().includes(filter.toLowerCase())
+  );
 
   return (
     <div>
-      <h1>Sip Happens Café</h1>
-      <Description text="Please leave your feedback about our service by selecting one of the options below." />
-      <Options onLeaveFeedback={updateFeedback} onReset={resetFeedback} total={totalFeedback} />
-      {totalFeedback > 0 ? (
-        <Feedback feedback={feedback} total={totalFeedback} positive={positiveFeedback} />
-      ) : (
-        <Notification message="There are no reviews yet" />
-      )}
+      <h1>Phonebook</h1>
+      <ContactForm addContact={addContact} />
+      <SearchBox filter={filter} onFilterChange={handleFilterChange} />
+      <ContactList contacts={filteredContacts} deleteContact={deleteContact} />
     </div>
   );
 };
 
 export default App;
-
