@@ -1,0 +1,17 @@
+.LoadMoreBtn {
+  display: block;
+  width: 200px;
+  margin: 20px auto;
+  padding: 10px;
+  font-size: 16px;
+  background-color: #3b5998; 
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.LoadMoreBtn:hover,
+LoadMoreBtn:focus {
+  background-color: #2d4373;
+}

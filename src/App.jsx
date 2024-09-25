@@ -1,72 +1,84 @@
-import React, { useState, useEffect } from 'react';
-import ContactForm from './components/ContactForm/ContactForm';
-import SearchBox from './components/SearchBox/SearchBox';
-import ContactList from './components/ContactList/ContactList';
-import { nanoid } from 'nanoid';
+import { useState, useEffect } from 'react';
+import SearchBar from './components/SearchBar/SearchBar';
+import ImageGallery from './components/ImageGallery/ImageGallery';
+import Loader from './components/Loader/Loader';
+import LoadMoreBtn from './components/LoadMoreBtn/LoadMoreBtn';
+import ImageModal from './components/ImageModal/ImageModal';
+import ErrorMessage from './components/ErrorMessage/ErrorMessage';
+import { fetchImages } from './components/Services/Api';
 
 const App = () => {
-  const [contacts, setContacts] = useState([
-    { id: 'id-1', name: 'Rosie Simpson', number: '459-12-56' },
-    { id: 'id-2', name: 'Hermione Kline', number: '443-89-12' },
-    { id: 'id-3', name: 'Eden Clements', number: '645-17-79' },
-    { id: 'id-4', name: 'Annie Copeland', number: '227-91-26' },
-  ]);
-
-  const [filter, setFilter] = useState('');
-
+  const [images, setImages] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [page, setPage] = useState(1);
+  const [query, setQuery] = useState('');
+  const [showModal, setShowModal] = useState(false);
+  const [error, setError] = useState(null);
+  const [currentImageIndex, setCurrentImageIndex] = useState(null);
 
   useEffect(() => {
-    const savedContacts = JSON.parse(localStorage.getItem('contacts'));
-    if (savedContacts) {
-      setContacts(savedContacts);
-    }
-  }, []);
+    if (!query) return;
 
+    const controller = new AbortController();
 
-  useEffect(() => {
-    localStorage.setItem('contacts', JSON.stringify(contacts));
-  }, [contacts]);
-
-
-  const addContact = ({ name, number }) => {
-    const duplicate = contacts.find(
-      contact => contact.name.toLowerCase() === name.toLowerCase()
-    );
-
-    if (duplicate) {
-      alert(`${name} is already in contacts!`);
-      return;
-    }
-
-    const newContact = {
-      id: nanoid(),
-      name,
-      number,
+    const fetchGallery = async () => {
+      setIsLoading(true);
+      try {
+        const data = await fetchImages(query, page, controller);
+        if (data.hits.length === 0) {
+          setError('No images found');
+          return;
+        }
+        setImages((prevImages) => [...prevImages, ...data.hits]);
+        setIsLoading(false);
+      } catch (error) {
+        setError('Something went wrong');
+        setIsLoading(false);
+      }
     };
-    setContacts((prevContacts) => [newContact, ...prevContacts]);
+
+    fetchGallery();
+
+    return () => {
+      controller.abort();
+    };
+  }, [query, page]);
+
+  const handleSearchSubmit = (newQuery) => {
+    setQuery(newQuery);
+    setImages([]);
+    setPage(1);
   };
 
-
-  const deleteContact = (id) => {
-    setContacts((prevContacts) => prevContacts.filter(contact => contact.id !== id));
+  const handleLoadMore = () => {
+    setPage((prevPage) => prevPage + 1);
   };
 
-
-  const handleFilterChange = (filter) => {
-    setFilter(filter);
+  const openModal = (index) => {
+    setCurrentImageIndex(index);
+    setShowModal(true);
   };
 
-
-  const filteredContacts = contacts.filter(contact =>
-    contact.name.toLowerCase().includes(filter.toLowerCase())
-  );
+  const closeModal = () => {
+    setShowModal(false);
+    setCurrentImageIndex(null);
+  };
 
   return (
-    <div>
-      <h1>Phonebook</h1>
-      <ContactForm addContact={addContact} />
-      <SearchBox filter={filter} onFilterChange={handleFilterChange} />
-      <ContactList contacts={filteredContacts} deleteContact={deleteContact} />
+    <div className="app">
+      <SearchBar onSubmit={handleSearchSubmit} />
+      {error && <ErrorMessage message={error} />}
+      <ImageGallery images={images} onImageClick={openModal} />
+      {isLoading && <Loader />}
+      {images.length > 0 && !isLoading && <LoadMoreBtn onClick={handleLoadMore} />}
+      {showModal && (
+        <ImageModal
+          isOpen={showModal}
+          onClose={closeModal}
+          images={images}
+          currentImageIndex={currentImageIndex}
+        />
+      )}
     </div>
   );
 };
