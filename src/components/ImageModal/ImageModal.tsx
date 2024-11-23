@@ -6,8 +6,20 @@ import styles from "./ImageModal.module.css";
 
 ReactModal.setAppElement("#root");
 
-const ImageModal = ({ isOpen, onClose, images, currentImageIndex }) => {
-    const [currentIndex, setCurrentIndex] = useState(currentImageIndex);
+interface Image {
+    largeImageURL: string;
+    tags: string;
+}
+
+interface ImageModalProps {
+    isOpen: boolean;
+    onClose: () => void;
+    images: Image[];
+    currentImageIndex: number;
+}
+
+const ImageModal: React.FC<ImageModalProps> = ({ isOpen, onClose, images, currentImageIndex }) => {
+    const [currentIndex, setCurrentIndex] = useState<number>(currentImageIndex);
 
     const handleNextImage = () => {
         setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);
@@ -19,8 +31,8 @@ const ImageModal = ({ isOpen, onClose, images, currentImageIndex }) => {
         );
     };
 
-    const handleOverlayClick = (e) => {
-        if (e.target.classList.contains(styles.overlay)) {
+    const handleOverlayClick = (e: React.MouseEvent<HTMLDivElement>) => {
+        if ((e.target as HTMLElement).classList.contains(styles.overlay)) {
             onClose();
         }
     };

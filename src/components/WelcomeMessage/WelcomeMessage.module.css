@@ -1,0 +1,37 @@
+.welcomeContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: white;
+  height: 100vh; 
+  position: relative;
+  padding: 0 20px; 
+  box-sizing: border-box; 
+}
+
+.welcomeTitle {
+  font-size: 3rem;
+  margin-bottom: 20px;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 700;
+}
+
+.welcomeText {
+  font-size: 1.25rem;
+  font-family: 'Arial', sans-serif;
+  font-weight: 300;
+  line-height: 1.6;
+}
+
+
+.welcomeContainer::after {
+  content: "Welcome to the site!";
+  position: absolute;
+  bottom: 20px;
+  width: 100%;
+  text-align: center;
+  font-size: 1.5rem;
+  font-weight: 700;
+}

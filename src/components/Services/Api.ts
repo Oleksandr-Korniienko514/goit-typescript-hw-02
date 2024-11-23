@@ -1,6 +1,15 @@
 import axios from 'axios';
 
-export const fetchImages = async (query, page = 1, controller) => {
+interface ImageData {
+    hits: {
+        id: number;
+        webformatURL: string;
+        largeImageURL: string;
+        tags: string;
+    }[];
+}
+
+export const fetchImages = async (query: string, page = 1, controller?: AbortController): Promise<ImageData> => {
     const API_KEY = '45213588-1347783919d0c1f7f1631233d';
     const BASE_URL = 'https://pixabay.com/api/';
 
@@ -20,7 +29,6 @@ export const fetchImages = async (query, page = 1, controller) => {
 
         return response.data;
     } catch {
-        // console.error('Error fetching images:', error);
         throw new Error('Failed to fetch images');
     }
 };

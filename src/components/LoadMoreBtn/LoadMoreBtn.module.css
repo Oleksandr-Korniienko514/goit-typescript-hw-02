@@ -4,7 +4,7 @@
   margin: 20px auto;
   padding: 10px;
   font-size: 16px;
-  background-color: #3b5998; 
+  background-color: #2563eb; 
   color: white;
   border: none;
   border-radius: 5px;
@@ -13,5 +13,5 @@
 
 .LoadMoreBtn:hover,
 LoadMoreBtn:focus {
-  background-color: #2d4373;
+  background-color: #2d4373;  
 }

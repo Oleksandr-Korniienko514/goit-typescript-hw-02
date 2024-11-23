@@ -1,28 +1,42 @@
 import { useState, useEffect } from 'react';
 import { FaSearch } from 'react-icons/fa';
+import { toast } from 'react-toastify';
 import styles from './SearchBar.module.css';
 
-const SearchBar = ({ onSubmit }) => {
-    const [query, setQuery] = useState('');
-    const [searchHistory, setSearchHistory] = useState([]);
+interface SearchBarProps {
+    onSubmit: (query: string) => void;
+}
+
+const SearchBar: React.FC<SearchBarProps> = ({ onSubmit }) => {
+    const [query, setQuery] = useState<string>('');
+    const [searchHistory, setSearchHistory] = useState<string[]>([]);
 
     useEffect(() => {
-        const storedSearchHistory = JSON.parse(localStorage.getItem('searchHistory')) || [];
+        const storedSearchHistory = JSON.parse(localStorage.getItem('searchHistory') || '[]');
         setSearchHistory(storedSearchHistory);
     }, []);
 
-    const handleInputChange = (event) => {
+    const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setQuery(event.target.value);
     };
 
-    const handleSubmit = (event) => {
+    const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
+
+
         if (query.trim() === '') {
-            alert('Please enter a search term.');
+
+            toast.error("Enter a word to search for photos", {
+                position: "top-center",
+                autoClose: 3000,
+                hideProgressBar: true,
+                closeOnClick: true,
+                pauseOnHover: true,
+            });
             return;
         }
 
-        const updatedSearchHistory = [query, ...searchHistory.filter(item => item !== query)].slice(0, 10); // Оставляем только уникальные последние 10 запросов
+        const updatedSearchHistory = [query, ...searchHistory.filter(item => item !== query)].slice(0, 10);
         localStorage.setItem('searchHistory', JSON.stringify(updatedSearchHistory));
         setSearchHistory(updatedSearchHistory);
         onSubmit(query);
@@ -31,7 +45,8 @@ const SearchBar = ({ onSubmit }) => {
     return (
         <header className={styles.searchBar}>
             <form onSubmit={handleSubmit} className={styles.searchForm}>
-                <input className={styles.input}
+                <input
+                    className={styles.input}
                     type="text"
                     autoComplete="off"
                     autoFocus
@@ -39,7 +54,6 @@ const SearchBar = ({ onSubmit }) => {
                     value={query}
                     onChange={handleInputChange}
                     list="search-suggestions"
-
                 />
                 <button type="submit" className={styles.searchButton}>
                     <FaSearch />

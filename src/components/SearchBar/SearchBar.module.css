@@ -1,15 +1,18 @@
 .searchBar {
-  background-color: rgb(62, 62, 179);
-  padding: 10px;
+  padding: 10px 20px;
   box-shadow: 0 2px 4px #0000001a;
   width: 100%;
-  position:sticky;
+  position: fixed;
+  background-color: #282c34; 
+  background-size: 400% 400%;
+  animation: gradient 15s ease infinite;
   top: 0;
   left: 0;
   z-index: 900;
   display: flex;
   justify-content: center;
-  margin-bottom: 20px;
+  padding-top: 10px; 
+  padding-bottom: 10px; 
 }
 
 .searchForm {
@@ -20,21 +23,17 @@
   height: 40px;
   border-radius: 8px;
   padding: 15px;
-  
-  
 }
 
 .input {
   width: 400px;
-  height: 20px;
+  height: 40px;
   border: 1px solid rgb(67, 67, 182);
   border-radius: 8px;
   box-shadow: 0 0 1px 1px rgb(64, 64, 182);
-  margin-bottom: 10px;
-  padding: 4px 6px;
   background-color: white;
   margin: 15px auto;
-   font-family: Arial, sans-serif;
+  font-family: Arial, sans-serif;
   font-weight: 600;
   font-size: 14px;
   padding: 10px;
@@ -54,7 +53,7 @@
 
 .searchButton {
   width: 100px;
-  height: 28px;
+  height: 40px;
   margin: 10px auto;
   font-family: Arial, sans-serif;
   font-size: 16px;
@@ -65,15 +64,14 @@
   box-shadow: 0 0 4px 2px rgb(177, 78, 207);
   transition: background-color 2s ease, color 2s ease;
   padding: 0;
-   border-radius: 8px;
-   margin-left: 15px;
+  border-radius: 8px;
+  margin-left: 15px;
 }
 
 .searchButton:hover {
   cursor: pointer;
   background-color: rgb(178, 58, 214);
   color: #fafafa;
-  border: none;
 }
 
 .searchButton:focus {

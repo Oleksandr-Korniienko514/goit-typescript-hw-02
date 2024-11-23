@@ -1,8 +1,22 @@
-/* src/index.css */
-
 body {
   font-family: sans-serif;
   line-height: 1.5;
+  background: linear-gradient(to bottom right, #2563eb, #7c3aed, #2bddd4);
+  background-size: 400% 400%;
+  animation: gradient 15s ease infinite;
+  height:100vh;
+}
+
+@keyframes gradient {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
 }
 
 h1,

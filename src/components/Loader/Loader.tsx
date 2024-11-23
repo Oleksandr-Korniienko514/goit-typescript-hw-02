@@ -1,7 +1,7 @@
 import './Loader.modal.css';
 import { Oval } from 'react-loader-spinner';
 
-const Loader = () => {
+const Loader: React.FC = () => {
     return (
         <div className="loader-mine">
             <Oval
