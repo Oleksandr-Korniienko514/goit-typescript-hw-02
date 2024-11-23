@@ -31,6 +31,7 @@ const ImageModal: React.FC<ImageModalProps> = ({ isOpen, onClose, images, curren
         );
     };
 
+
     const handleOverlayClick = (e: React.MouseEvent<HTMLDivElement>) => {
         if ((e.target as HTMLElement).classList.contains(styles.overlay)) {
             onClose();
@@ -62,7 +63,7 @@ const ImageModal: React.FC<ImageModalProps> = ({ isOpen, onClose, images, curren
             onRequestClose={onClose}
             className={styles.modal}
             overlayClassName={styles.overlay}
-            onClick={handleOverlayClick}
+
         >
             <div className={styles.imageModal}>
                 <img className={styles.img} src={largeImageURL} alt={tags} />
